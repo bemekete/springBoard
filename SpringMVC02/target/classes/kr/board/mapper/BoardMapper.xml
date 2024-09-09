@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kr.board.mapper.BoardMapper">
+	<!-- 게시글목록 -->
+	<select id="getLists" resultType="kr.board.entity.Board">
+		select * from myboard order by idx desc
+	</select>
+	
+	<!-- 게시글입력 -->
+	<insert id="boardInsert" parameterType="kr.board.entity.Board">
+		insert into myboard(title, content, writer) values(#{title},#{content},#{writer})
+	</insert>
+	
+	<!-- 게시글상세 -->
+	<select id="boardDetail" parameterType="int" resultType="kr.board.entity.Board">
+		select * from myboard where idx = #{idx}
+	</select>
+	
+	<!-- 게시글삭제 -->
+	<delete id="boardDelete" parameterType="int">
+		delete from myboard where idx = #{idx}
+	</delete>
+	
+	<!-- 게시글수정 -->
+	<update id="boardUpdate" parameterType="kr.board.entity.Board">
+		update myboard
+		set title = #{title}, content = #{content}
+		where idx = #{idx}
+	</update>
+</mapper>
