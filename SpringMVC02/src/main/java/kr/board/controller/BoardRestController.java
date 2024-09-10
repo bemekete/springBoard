@@ -19,7 +19,7 @@ import lombok.AllArgsConstructor;
 @RequestMapping("/board")
 @AllArgsConstructor
 public class BoardRestController {
-
+	// 주석추가
 	private final BoardMapper mapper;
 
 	// 게시글목록
