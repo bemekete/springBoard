@@ -18,7 +18,7 @@
   	
   	function loadList() {
 		$.ajax({
-			url:"boardList.do",
+			url:"board/list",
 			type: "get",
 			dataType: "json",
 			success: makeView,
@@ -42,19 +42,19 @@
 		$.each(data, function(index,obj) {
 			listHtml += "<tr>";
 			listHtml += "<td>" + obj.idx + "</td>";
-			listHtml += "<td><a href='javascript:goContent("+ obj.idx +")'>" + obj.title + "<a/></td>";
+			listHtml += "<td id='t" + obj.idx + "'><a href='javascript:goContent("+ obj.idx +")'>" + obj.title + "<a/></td>";
 			listHtml += "<td>" + obj.writer + "</td>";
-			listHtml += "<td>" + obj.indate + "</td>";
-			listHtml += "<td>" + obj.count + "</td>";
+			listHtml += "<td>" + obj.indate.split(" ")[0] + "</td>";
+			listHtml += "<td id='count"+obj.idx+"'>" + obj.count + "</td>";
 			listHtml += "</tr>";
 			
 			listHtml += "<tr id = "+ obj.idx + " style = 'display:none'>";
 			listHtml += "<td>내용</td>";
 			listHtml += "<td colspan='4'>";
-			listHtml += "<textarea readonly rows='7' class='form-control'>" + obj.content + "</textarea>";
+			listHtml += "<textarea readonly rows='7' id='ta"+ obj.idx +"' class='form-control'></textarea>";
 			listHtml += "<br/>";
-			listHtml += "<button class='btn btn-primary btn-xs'>수정</button>&nbsp";
-			listHtml += "<button class='btn btn-danger btn-xs' onclick='goDelete("+obj.idx+")'>삭제</button>";
+			listHtml += "<span id='btn"+obj.idx+"'><button class='btn btn-primary btn-xs' onclick='goUpdateForm(" + obj.idx + ")'>수정</button></span>&nbsp";
+			listHtml += "<button class='btn btn-danger btn-xs' onclick='goDelete(" + obj.idx + ")'>삭제</button>";
 			listHtml += "</td>";
 			listHtml += "</tr>";
 		})
@@ -84,22 +84,38 @@
 		var formData = $("#form").serialize();
 		
 		$.ajax({
-			url : "boardInsert.do",
+			url : "board/insert",
 			type : "post",
 			data : formData,
 			success : loadList,
-			error : function (error) {
-				alert("error : " + error);
+			error : function () {
+				alert("error");
 			}
 		});
 		
 		$("#formClear").trigger("click");
 	}
   	
-  	// 게시글 열기/접기
+  	// 게시글 열기,접기
   	function goContent(idx) {
   		if ($("#" + idx).css("display") == "none") {
+  			
+  			$.ajax({
+  				url : "board/"+idx,
+  				type : "get",
+  				dataType: "json",
+  				success : function(data) {
+  					$("#ta"+idx).val(data.content); // 서버에서 내용 불러오기
+  					$("#count"+idx).text(data.count); // 조회수증가
+  			},
+  				error : function() {
+  					alert("error");
+  				}
+  			})
+  			
 			$("#" + idx).css("display","table-row");
+			$("#ta" + idx).attr("readonly",true);
+  			
 		}else{
 			$("#" + idx).css("display","none");
 		}
@@ -109,7 +125,7 @@
   	function goDelete(idx) {
   		if (confirm("삭제하시겠습니까?")) {
   			$.ajax({
-  				url : "boardDelete.do",
+  				url : "board/"+idx,
   				data : {"idx" : idx},
   				type : 'get',
   				success : loadList,
@@ -119,6 +135,43 @@
   			})
 		}
 	}
+  	
+  	// 게시글수정폼
+  	function goUpdateForm(idx) {
+		$("#ta"+idx).attr("readonly",false);
+		var title =	$("#t"+idx).text();
+		var newInput = "<input type='text' id='ni"+ idx +"' class='form-control' value='" + title + "'>"
+		$("#t"+idx).html(newInput);
+		
+		var newBtn = "<button type='button' class='btn btn-primary btn-xs' onclick='goUpdate("+idx+")'>수정완료</button>"
+		$("#btn"+idx).html(newBtn);
+	}
+  	
+  	// 게시글수정
+  	function goUpdate(idx) {
+		if (confirm("수정하시겠습니까?")) {
+			var title =	$("#ni"+idx).val();
+			var content = $("#ta"+idx).val();
+	
+			var updateData = {
+				"idx" : idx,
+				"title" : title,
+				"content" : content
+			}
+			
+			$.ajax({
+				url : "board/update",
+				type : "put",
+				data : JSON.stringify(updateData),
+				contentType: "application/json; charset=utf-8",
+				success : loadList,
+				error : function () {
+					alert("error");
+				}
+			})
+		}
+	}
+  	
   </script>
 </head>
 <body>
