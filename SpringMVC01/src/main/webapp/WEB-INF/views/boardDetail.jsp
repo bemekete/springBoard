@@ -15,7 +15,7 @@
 <body>
  
 <div class="container">
-  <h2>Spring MVC01</h2>
+  <h2>자유게시판</h2>
   <div class="panel panel-default">
     <div class="panel-heading">게시글 상세보기</div>
     <div class="panel-body">
@@ -51,7 +51,7 @@
 			</table>
 		</form>
 	</div>
-    <div class="panel-footer">인프런 스프1탄 황인규</div>
+    <div class="panel-footer">게시판 게시판 게시판 게시판 </div>
   </div>
 </div>
 

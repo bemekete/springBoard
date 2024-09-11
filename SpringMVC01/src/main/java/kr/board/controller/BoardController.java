@@ -23,7 +23,7 @@ public class BoardController {
 	@RequestMapping("/boardList.do")
 	public String boardList(Model model) {
 		List<Board> list  = mapper.getLists();
-		model.addAttribute("list", list); // 객체바인딩
+		model.addAttribute("list", list);
 		return "boardList";
 	}
 	

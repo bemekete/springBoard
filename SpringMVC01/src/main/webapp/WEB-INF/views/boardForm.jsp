@@ -10,11 +10,19 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <script type="text/javascript">
+  	function goList() {
+		if (confirm("취소하시겠습니까?")) {
+			location.href="boardList.do";
+		}
+  		
+	}
+  </script>
 </head>
 <body>
  
 <div class="container">
-  <h2>Spring MVC01</h2>
+  <h2>자유게시판</h2>
   <div class="panel panel-default">
     <div class="panel-heading">게시글입력</div>
     <div class="panel-body">
@@ -35,13 +43,13 @@
 				<tr>
 					<td colspan="2" align="center">
 						<button type="submit" class="btn btn-success btn-sm">등록</button>
-						<button type="reset" class="btn btn-warning btn-sm">취소</button>
+						<button type="button" onclick="goList()" class="btn btn-warning btn-sm">취소</button>
 					</td>
 				</tr>
 			</table>
 		</form>
 	</div>
-    <div class="panel-footer">인프런 스프1탄 황인규</div>
+    <div class="panel-footer">게시판 게시판 게시판 게시판 </div>
   </div>
 </div>
 
